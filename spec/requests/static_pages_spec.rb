@@ -56,6 +56,18 @@ describe "Static pages" do
       before { click_link "delete" }
       it { should have_selector('span', text: '1 micropost') }
     end
-
   end  
+
+  describe "pagination" do
+    let(:user) { FactoryGirl.create(:user) }
+    before(:all) do
+      32.times { FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum") }
+      valid_signin user
+      visit root_path
+    end
+
+    after(:all) { User.delete_all }
+
+    it { should have_selector('div.pagination') }
+  end    
 end
